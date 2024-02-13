@@ -1,6 +1,8 @@
 package Chrome;
 
+import com.google.common.collect.ImmutableMultimap;
 import io.appium.java_client.android.AndroidDriver;
+//import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -11,6 +13,9 @@ import org.testng.annotations.Test;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+//import java.util.concurrent.TimeUnit;formedURLException;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class chrome {
     public AndroidDriver androidDriver;
@@ -18,29 +23,22 @@ public class chrome {
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
-        DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
-        desiredCapabilities.setCapability("deviceName","emulator-5554");
-        desiredCapabilities.setCapability("platformName", "Android");
-        desiredCapabilities.setCapability("appPackage", "com.android.chrome");
+        DesiredCapabilities cap = new DesiredCapabilities();
 
-        desiredCapabilities.setCapability("appActivity","com.google.android.apps.chrome.Main");
-        desiredCapabilities.setCapability("platformVersion","9.0");
-
-        androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
+//        cap.setCapability(MobileCapabilityType.DEVICE_NAME,"emulator-5554");
+//        cap.setCapability(MobileCapabilityType.PLATFORM_NAME,"Android");
+//        cap.setCapability(MobileCapabilityType.BROWSER_NAME,"chrome");
+        cap.setCapability("chromedriverExecutable","C:\\Users\\DELL\\IntelliJIdeaProjects\\MobileAutomationProject\\src\\test\\emulator\\resources");
+        cap.setCapability("chomeOptions", ImmutableMultimap.of("w3c",false));
+        androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"),cap);
+        androidDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
-
     @Test
-    public void launchSite() throws InterruptedException {
-        androidDriver.get("https://www.amazon.in");
-        Thread.sleep(5000);
-
-        WebElement searchTab= androidDriver.findElement(By.id("//input[@id='twotabsearchtextbox']"));
-        Thread.sleep(3000);
-        searchTab.sendKeys("Iphone");
-        Thread.sleep(3000);
-        searchTab.sendKeys(Keys.ENTER);
-
-
-
+    public void searchProduct() throws InterruptedException {
+        androidDriver.get("https://www.amazone.com/");
+        Thread.sleep(6000);
+        WebElement element = androidDriver.findElement(By.name("k"));
+        element.sendKeys("Laptop");
+//        element.sendKeys(Keys.ENTER);
     }
 }
